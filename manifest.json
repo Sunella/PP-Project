@@ -1,0 +1,11 @@
+{
+  "name": "Meal Scheduler",
+  "description": "An app to track and schedule donated meals",
+  "app": {
+    "launch": {
+      "local_path": "index.html",
+	  "container": "tab"
+    }
+  },
+  "offline_enabled": true
+}
