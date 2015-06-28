@@ -32,7 +32,6 @@ var Scheduler = {
 		this.setDate();
 		this.initUI();
 		
-		// what month to render first?
 		var hash = document.location.href.match(/([0-9]{1,2})\-([0-9]{4})/i);
 		if(hash && hash[1] >= 1 && hash[1] <= 12 && hash[2] >= 1900 && hash[2] <= 2050) {
 			this.specificMonth(hash[1], hash[2]);
@@ -40,7 +39,6 @@ var Scheduler = {
 			this.today();
 		}
 		
-		// only load the diary on pageload if there's enough space to render it
 		Scheduler.renderDiary( $('.day' + this.date).data('id') );
 		this.UI.resize();
 
@@ -68,7 +66,6 @@ var Scheduler = {
 			'diary': $('#diary')
 		};
 		
-		// time in create event dialog
 		var val = '';
 		for(i=0; i<24; i++) {
 			val = i.pad(2);
@@ -80,7 +77,6 @@ var Scheduler = {
 			this.UI.event_minute.append( $('<option value="'+val+'">').html(val) );
 		}
 		
-		// label colors in create event dialog
 		var labels = $('<div class="labels">'), lbl = '';
 		for(var i in this.LABELS) {
 			lbl = this.LABELS[i];
@@ -88,14 +84,12 @@ var Scheduler = {
 		}
 		this.UI.event_label.append(labels);
 		
-		// day names
 		var html = '';
 		for(var i=0; i<7; i++) {
 			html += '<td>'+this.DAYS[i]+'</td>';
 		}
 		$('thead').append( $('<tr>').html(html) );
 		
-		// close add prompt
 		$('#event-close').click(function() {
 			Scheduler.closeAddPrompt();
 		});
@@ -118,7 +112,6 @@ var Scheduler = {
 		});
 
 		
-		// event form add
 		this.UI.add.submit(function() {
 			Scheduler.createEvent(
 				Scheduler.new_id,
@@ -153,7 +146,6 @@ var Scheduler = {
 			return false;
 		});
 		
-		// previous and next buttons
 		$('#btn-previous').click(function() {
 			Scheduler.previousMonth();
 			return false;
@@ -168,7 +160,6 @@ var Scheduler = {
 		});
 
 		
-		// diary close
 		$('#diary-close').click(function() {
 			this.diary_open = true;
 			Scheduler.UI.diary_wrap.hide();
@@ -216,7 +207,6 @@ var Scheduler = {
 	renderCalendar: function() {
 		document.location.href = '#' + ( this.month+1 + '-' + this.year );
 		
-		// rest of the days
 		var wn = 0,
 			tblweek = null,
 			table = $('<tbody class="month'+this.month+'">');
@@ -224,7 +214,6 @@ var Scheduler = {
 		if(this.weekstart > 0) {
 			tblweek = $('<tr>').addClass('w0');
 
-			// blank days
 			for(var i=0; i<this.weekstart; i++) {
 				tblweek.append($('<td class="day">'));
 			}
@@ -234,7 +223,7 @@ var Scheduler = {
 
 		for(var d=1; d <=this.num_days; d++) {
 			var w = (this.weekstart+d-1)%7;
-			if(w == 0) {	// new week
+			if(w == 0) {	
 				tblweek = $('<tr>');
 				table.append(tblweek);
 				wn++;
@@ -262,7 +251,6 @@ var Scheduler = {
 		$('#calendar-title').html(this.MONTHS[this.month] + ' ' + this.year);
 		$('tbody').replaceWith(table);
 
-		// today
 		$('.month' + new Date().getMonth() + ' .day' + this.date).addClass('today');
 		$('.month' + this.month + ' .day' + this.date).addClass('marked');
 		
@@ -344,7 +332,6 @@ var Scheduler = {
 			}
 		});
 
-		// remove redundant hours
 		for(var r in removals) {
 			$('#diary .hour' + r).remove();
 		}
@@ -353,7 +340,6 @@ var Scheduler = {
 		this.UI.dialog.find('.target').hide();
 		target.show();
 		
-		// position
 		this.UI.dialog.width( this.UI.calendar.width()/2 );
 		this.UI.dialog.css('top', ( $(window).height() - this.UI.dialog.height())/2)
 					.css('left', ( this.UI.calendar.width() - this.UI.dialog.width())/2);
@@ -373,7 +359,6 @@ var Scheduler = {
 		this.UI.event_tweet.hide();
 		this.UI.event_delete.hide();
 		
-		// passing an existing item
 		if(id && i != null&& this.EVENTS[id][i]) {
 			this.UI.event_description.val( this.EVENTS[id][i].description );
 			this.UI.event_hour.val( this.EVENTS[id][i].hour );
